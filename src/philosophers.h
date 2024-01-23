@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:22:51 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/23 03:59:36 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/01/23 04:30:00 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,15 @@ typedef struct s_data
 //		returns t_data *struct
 //		returns null if error
 t_data	*app_init(int argc, char **argv);
+
+//	FROM FILE utils/exit_handler.c
+
+//	secure_exit: clear garbage collector and returns 0
+int		secure_exit(void);
+//	error_exit: clear garbage collector and returns 1
+int		error_exit(void);
+//	crash_exit: clear garbage collector, prints error and returns 0
+int		crash_exit(void);
 
 //	FROM FILE utils/parser.c
 

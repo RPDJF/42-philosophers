@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 03:53:52 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/23 04:25:12 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/01/23 04:33:20 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	init_simulation_limit(t_data *data, int argc, char **argv)
 			return (-1);
 	}
 	else
-		data->number_of_times_each_philosopher_must_eat = -2;
+		data->number_of_times_each_philosopher_must_eat = 0;
 	return (0);
 }
 

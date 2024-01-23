@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 02:25:08 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/23 04:20:55 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/01/23 04:33:15 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,6 @@ int	main(int argc, char **argv)
 		return (1);
 	data = app_init(argc, argv);
 	if (!data)
-	{
-		cleargarbage();
-		return (1);
-	}
-	cleargarbage();
+		return (crash_exit());
+	return (secure_exit());
 }

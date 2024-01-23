@@ -77,6 +77,7 @@ BETTERFT_LIB = $(BETTERFT_PATH:%=%betterft.a)
 
 SRC = 	philosophers \
 		utils/app_init \
+		utils/exit_handler \
 		utils/parser \
 
 
