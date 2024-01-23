@@ -1,28 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memncat.c                                       :+:      :+:    :+:   */
+/*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/20 13:18:07 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/23 02:31:01 by rude-jes         ###   ########.fr       */
+/*   Created: 2023/01/20 02:22:51 by rude-jes          #+#    #+#             */
+/*   Updated: 2024/01/23 02:40:30 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../betterft.h"
+#ifndef PHILOSOPHERS_H
+# define PHILOSOPHERS_H
 
-void	*ft_memncat(void *dest, size_t start, void *src, size_t nb)
-{
-	int	i;
+# include "../libs/betterft/betterft.h"
 
-	if (!dest)
-		return (0);
-	i = 0;
-	while ((unsigned int)i < nb)
-	{
-		((unsigned char *)dest)[start + i] = ((unsigned char *)src)[i];
-		i++;
-	}
-	return (dest);
-}
+#endif
