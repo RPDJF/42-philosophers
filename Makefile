@@ -76,6 +76,8 @@ BETTERFT_PATH = libs/betterft/
 BETTERFT_LIB = $(BETTERFT_PATH:%=%betterft.a)
 
 SRC = 	philosophers \
+		utils/app_init \
+		utils/parser \
 
 
 CFILES = $(SRC:%=src/%.c)

@@ -6,13 +6,36 @@
 /*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 02:25:08 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/23 02:32:12 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/01/23 04:20:55 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	main(void)
+t_philosopher	*new_philosopher(t_data *data)
 {
-	ft_printf("Hello World\n");
+	t_philosopher	*philosopher;
+
+	philosopher = galloc(sizeof(t_philosopher));
+	if (!philosopher)
+		return (0);
+	philosopher->time_to_die = data->time_to_die;
+	philosopher->time_to_eat = data->time_to_eat;
+	philosopher->time_to_sleep = data->time_to_sleep;
+	return (philosopher);
+}
+
+int	main(int argc, char **argv)
+{
+	t_data	*data;
+
+	if (argc < 5 || argc > 6)
+		return (1);
+	data = app_init(argc, argv);
+	if (!data)
+	{
+		cleargarbage();
+		return (1);
+	}
+	cleargarbage();
 }
