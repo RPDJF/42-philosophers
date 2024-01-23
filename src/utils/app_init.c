@@ -6,11 +6,71 @@
 /*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 03:53:52 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/23 04:33:20 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/01/23 05:29:09 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philosophers.h"
+
+static void	init_forks(t_data *data, t_philosopher *philosopher, int id)
+{
+	philosopher->fork = true;
+	if (id - 1 > 0)
+	{
+		philosopher->l_fork = &data->philosophers[id - 2]->fork;
+		data->philosophers[id - 2]->r_fork = &philosopher->fork;
+	}
+	else
+		philosopher->l_fork = 0;
+	if (id != 1 && id == data->number_of_philosophers)
+	{
+		data->philosophers[0]->l_fork = &philosopher->fork;
+		philosopher->r_fork = &data->philosophers[0]->fork;
+	}
+	else if (id == 1 && id == data->number_of_philosophers)
+		philosopher->r_fork = 0;
+}
+
+static t_philosopher	*new_philosopher(t_data *data)
+{
+	t_philosopher	*philosopher;
+	static int		id;
+
+	philosopher = galloc(sizeof(t_philosopher));
+	if (!philosopher)
+		return (0);
+	philosopher->id = ++id;
+	init_forks(data, philosopher, id);
+	philosopher->time_to_die = data->time_to_die;
+	philosopher->time_to_eat = data->time_to_eat;
+	philosopher->time_to_sleep = data->time_to_sleep;
+	return (philosopher);
+}
+
+static int	init_philosophers(t_data *data)
+{
+	int	idx;
+
+	idx = -1;
+	while (idx++, idx < data->number_of_philosophers)
+	{
+		data->philosophers = ft_reallocf(data->philosophers,
+				(size_t)idx * sizeof(t_philosopher **),
+				((size_t)idx + 1) * sizeof(t_philosopher **));
+		if (!data->philosophers)
+			return (-1);
+		data->philosophers[idx] = new_philosopher(data);
+		if (!data->philosophers[idx])
+			return (-1);
+	}
+	data->philosophers = ft_reallocf(data->philosophers,
+			(size_t)idx * sizeof(t_philosopher **),
+			((size_t)idx + 1) * sizeof(t_philosopher **));
+	if (!data->philosophers)
+		return (-1);
+	data->philosophers[idx] = 0;
+	return (0);
+}
 
 static int	init_simulation_limit(t_data *data, int argc, char **argv)
 {
@@ -32,6 +92,7 @@ t_data	*app_init(int argc, char **argv)
 	data = galloc(sizeof(t_data));
 	if (!data)
 		return (0);
+	data->philosophers = 0;
 	data->number_of_philosophers = parse_pint(argv[1]);
 	if (data->number_of_philosophers < 0)
 		return (0);
@@ -45,6 +106,8 @@ t_data	*app_init(int argc, char **argv)
 	if (data->time_to_sleep < 0)
 		return (0);
 	if (init_simulation_limit(data, argc, argv) < 0)
+		return (0);
+	if (init_philosophers(data) < 0)
 		return (0);
 	return (data);
 }

@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:22:51 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/23 04:30:00 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/01/23 04:47:52 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,11 @@
 
 typedef struct s_philosopher
 {
+	int			id;
 	pthread_t	thread;
+	bool		fork;
+	bool		*l_fork;
+	bool		*r_fork;
 	int			time_to_die;
 	int			time_to_eat;
 	int			time_to_sleep;
@@ -37,7 +41,7 @@ typedef struct s_data
 
 //	FROM FILE utils/app_init.c
 
-//		app_init: initialize application data
+//		app_init: initialize application data ad philosophers instances
 //		returns t_data *struct
 //		returns null if error
 t_data	*app_init(int argc, char **argv);
