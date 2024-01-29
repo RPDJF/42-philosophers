@@ -1,32 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_handler.c                                     :+:      :+:    :+:   */
+/*   events_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/23 04:26:57 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/23 04:28:11 by rude-jes         ###   ########.fr       */
+/*   Created: 2024/01/29 21:39:58 by rude-jes          #+#    #+#             */
+/*   Updated: 2024/01/29 21:55:41 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philosophers.h"
 
-int	secure_exit(void)
+void	update_death(t_philosopher *philosopher, bool status)
 {
-	cleargarbage();
-	return (0);
+	pthread_mutex_lock(philosopher->dead_lock);
+	*philosopher->is_someone_dead = status;
+	pthread_mutex_unlock(philosopher->dead_lock);
 }
 
-int	error_exit(void)
+bool	check_death(t_philosopher *philosopher)
 {
-	cleargarbage();
-	return (1);
-}
+	bool	status;
 
-int	crash_exit(void)
-{
-	cleargarbage();
-	ft_putendl_fd("Error", 2);
-	return (1);
+	pthread_mutex_lock(philosopher->dead_lock);
+	status = *philosopher->is_someone_dead;
+	pthread_mutex_unlock(philosopher->dead_lock);
+	return (status);
 }

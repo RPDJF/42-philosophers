@@ -1,18 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/10 07:23:34 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/23 02:31:39 by rude-jes         ###   ########.fr       */
+/*   Created: 2024/01/23 03:54:46 by rude-jes          #+#    #+#             */
+/*   Updated: 2024/01/29 23:44:00 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../betterft.h"
+#include "../philosophers.h"
 
-void	ft_bzero(void *s, size_t n)
+int	parse_pint(char *input)
 {
-	ft_memset(s, 0, n);
+	int		output;
+	char	*tmp;
+
+	input = ft_strtrim(input, " \t\n\v\f\r");
+	output = ft_atoi(input);
+	if (output < 0)
+		return (-1);
+	tmp = ft_itoa(output);
+	if (!tmp)
+		free(input);
+	if (!tmp)
+		return (-1);
+	if (ft_strcmp(input, tmp))
+		output = -1;
+	free(input);
+	free(tmp);
+	return (output);
 }

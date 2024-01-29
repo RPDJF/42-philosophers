@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa_base.c                                     :+:      :+:    :+:   */
+/*   ft_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/20 20:03:30 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/23 02:31:39 by rude-jes         ###   ########.fr       */
+/*   Created: 2024/01/29 22:55:42 by rude-jes          #+#    #+#             */
+/*   Updated: 2024/01/30 00:04:11 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../betterft.h"
+#include "../philosophers.h"
 
 static unsigned int	inputparser(int n)
 {
@@ -23,7 +23,7 @@ static unsigned int	inputparser(int n)
 	return (output);
 }
 
-char	*ft_itoa_base(int n, const char *base)
+char	*ft_itoa(int n)
 {
 	char			*p;
 	unsigned int	temp;
@@ -35,18 +35,51 @@ char	*ft_itoa_base(int n, const char *base)
 		isneg = 1;
 	temp = inputparser(n);
 	len = 0;
-	while (++len, temp >= ft_strlen(base))
-		temp /= ft_strlen(base);
-	p = (char *)ft_calloc(len + 1 + isneg, sizeof(char));
+	while (++len, temp >= 10)
+		temp /= 10;
+	p = (char *)malloc((len + 1 + isneg) * sizeof(char));
 	if (!p)
 		return (0);
+	p[(len + isneg) * sizeof(char)] = 0;
 	temp = inputparser(n);
 	while (len-- > 0)
 	{
-		p[len + isneg] = base[temp % ft_strlen(base)];
-		temp /= ft_strlen(base);
+		p[len + isneg] = (temp % 10) + '0';
+		temp /= 10;
 	}
 	if (isneg)
 		p[0] = '-';
 	return (p);
+}
+
+static int	ft_isspace(char c)
+{
+	if (c == ' ' || c == '\t' || c == '\n'
+		|| c == '\v' || c == '\f' || c == '\r')
+		return (1);
+	return (0);
+}
+
+static int	ft_isdigit(int c)
+{
+	if (!(c >= '0' && c <= '9'))
+		return (0);
+	return (1);
+}
+
+int	ft_atoi(const char *str)
+{
+	int	output;
+	int	sign;
+
+	output = 0;
+	sign = 1;
+	while (ft_isspace(*str))
+		str++;
+	if (*str == '+' || *str == '-')
+		if (*(str++) == '-')
+			sign = -sign;
+	while (ft_isdigit(*str))
+		output = output * 10 + *(str++) - '0';
+	return (sign * output);
 }

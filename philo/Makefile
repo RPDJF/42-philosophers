@@ -72,16 +72,17 @@ export BONUS_HEADER
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
-BETTERFT_PATH = libs/betterft/
-BETTERFT_LIB = $(BETTERFT_PATH:%=%betterft.a)
-
 SRC = 	philosophers \
 		utils/app_init \
+		utils/events_handler \
 		utils/exit_handler \
+		utils/ft_utils_atoitoa \
+		utils/ft_utils_mem \
+		utils/ft_utils_str \
 		utils/parser \
 
 
-CFILES = $(SRC:%=src/%.c)
+CFILES = $(SRC:%=./%.c)
 
 BONUS_SRC =	philosophers_bonus \
 
@@ -93,19 +94,19 @@ BONUS_NAME = philosophers_bonus
 
 all: $(NAME)
 
-debug: fclean $(CFILES) $(BETTERFT_LIB)
+debug: fclean $(CFILES)
 	@echo "$$APP_HEADER"
 	@printf "\t🤖 Compiling $(NAME)...\r"
-	@$(CC) -g3 -fsanitize=address $(CFILES) $(BETTERFT_LIB) $(CFLAGS) -o $(NAME)
+	@$(CC) -g3 -fsanitize=address $(CFILES) $(CFLAGS) -o $(NAME)
 	@printf "\33[2K"
 	@echo "\t[INFO]\t[$(NAME)]\t$(NAME) is compiled ✅"
 	@echo "\nThe programm was compiled with debug sanitizer set to address\nDo not forget to use \"leak -atExit -- $(NAME)\" in order to check for potential leaks.\nNote that it won't work with the debug version.\n\nFor better debug, you can use \"lldb $(name) <args>\" after using debug rule.\n\n"
 	@echo $(shell norminette)
 
-clean: $(BETTERFT_PATH)Makefile
-	@$(MAKE) -C $(BETTERFT_PATH) fclean --no-print-directory
+clean:
+	@echo "\t[INFO]\t[$(NAME)]\tNothing needs to be cleaned !"
 
-fclean: clean
+fclean:
 	@rm -f $(NAME)
 	@rm -f $(BONUS_NAME)
 	@echo "\t[INFO]\t[$(NAME)]\t$(NAME) is fully deleted 🗑️"
@@ -124,7 +125,6 @@ help:
 	@echo "debug		-	Runs the program with g3 fsanitize=address"
 	@echo "$(NAME)	-	Build the $(NAME) with necessary libs"
 	@echo "$(BONUS_NAME)		-	Build the $(BONUS_NAME) with necessary libs"
-	@echo "$(BETTERFT_LIB)	-	Build the lib $(BETTERFT_LIB)"
 
 $(CFILES): header
 
@@ -135,28 +135,24 @@ $(BONUS_CFILES): header
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@printf "\33[2K"
 
-$(NAME): $(CFILES) $(BETTERFT_LIB)
+$(NAME): $(CFILES)
 	@echo "$$APP_HEADER"
 	@printf "\t🤖 Compiling $(NAME)...\r"
-	@$(CC) $(CFILES) $(BETTERFT_LIB) $(CFLAGS) -o $(NAME)
+	@$(CC) $(CFILES) $(CFLAGS) -o $(NAME)
 	@printf "\33[2K"
 	@echo "\t[INFO]\t[$(NAME)]\t$(NAME) is compiled ✅\n"
 
-$(BETTERFT_LIB): $(BETTERFT_PATH)Makefile
-	@echo "$$LIB_HEADER"
-	@make -C $(BETTERFT_PATH) all --no-print-directory
-
-$(BONUS_NAME): $(BONUS_CFILES) $(BETTERFT_LIB)
+$(BONUS_NAME): $(BONUS_CFILES)
 	@echo "$$BONUS_HEADER"
 	@printf "\t🤖 Compiling $(BONUS_NAME) 🌟...\r"
-	@$(CC) $(BONUS_CFILES) $(BETTERFT_LIB) $(CFLAGS) -o $(NAME)
+	@$(CC) $(BONUS_CFILES) $(CFLAGS) -o $(NAME)
 	@printf "\33[2K"
 	@echo "\t[INFO]\t[$(BONUS_NAME)]\t$(NAME) ($(BONUS_NAME)) 🌟 is compiled ✅\n"
 
-bonus_debug: $(BONUS_CFILES) $(BETTERFT_LIB)
+bonus_debug: $(BONUS_CFILES)
 	@echo "$$BONUS_HEADER"
 	@printf "\t🤖 Compiling $(BONUS_NAME) 🌟...\r"
-	@$(CC) $(BONUS_CFILES) $(BETTERFT_LIB) $(CFLAGS) -g3 -fsanitize=address -o $(NAME)
+	@$(CC) $(BONUS_CFILES) $(CFLAGS) -g3 -fsanitize=address -o $(NAME)
 	@printf "\33[2K"
 	@echo "\t[INFO]\t[$(BONUS_NAME)]\t$(NAME) ($(BONUS_NAME)) 🌟 is compiled ✅\n"
 	@echo "\nThe programm was compiled with debug sanitizer set to address\nDo not forget to use \"leak -atExit -- $(NAME)\" in order to check for potential leaks.\nNote that it won't work with the debug version.\n\nFor better debug, you can use \"lldb $(name) <args>\" after using debug rule.\n\n"
