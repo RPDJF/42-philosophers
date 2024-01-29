@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 03:53:52 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/30 00:05:56 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/01/30 00:43:39 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,26 @@ static int	init_simulation_limit(t_data *data, int argc, char **argv)
 	return (0);
 }
 
+static int	destroy_data(t_data *data)
+{
+	t_philosopher	**head;
+
+	head = data->philosophers;
+	if (head)
+	{
+		while (*head)
+		{
+			free(*head);
+			head++;
+		}
+	}
+	free(data->philosophers);
+	free(data);
+	return (0);
+}
+
+// need to protect philosopherS creation
+
 t_data	*app_init(int argc, char **argv)
 {
 	t_data	*data;
@@ -99,19 +119,19 @@ t_data	*app_init(int argc, char **argv)
 	data->philosophers = 0;
 	data->number_of_philosophers = parse_pint(argv[1]);
 	if (data->number_of_philosophers < 0)
-		return (0);
+		return (destroy_data(data));
 	data->time_to_die = parse_pint(argv[2]);
 	if (data->time_to_die < 0)
-		return (0);
+		return (destroy_data(data));
 	data->time_to_eat = parse_pint(argv[3]);
 	if (data->time_to_eat < 0)
-		return (0);
+		return (destroy_data(data));
 	data->time_to_sleep = parse_pint(argv[4]);
 	if (data->time_to_sleep < 0)
-		return (0);
+		return (destroy_data(data));
 	if (init_simulation_limit(data, argc, argv) < 0)
-		return (0);
+		return (destroy_data(data));
 	if (init_philosophers(data) < 0)
-		return (0);
+		return (destroy_data(data));
 	return (data);
 }

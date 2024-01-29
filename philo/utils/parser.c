@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 03:54:46 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/29 23:44:00 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/01/30 00:38:20 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	parse_pint(char *input)
 	char	*tmp;
 
 	input = ft_strtrim(input, " \t\n\v\f\r");
+	if (!input)
+		return (-1);
 	output = ft_atoi(input);
 	if (output < 0)
 		return (-1);
