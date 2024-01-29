@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:22:51 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/23 04:47:52 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/01/29 18:28:05 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,15 @@
 
 typedef struct s_philosopher
 {
-	int			id;
-	pthread_t	thread;
-	bool		fork;
-	bool		*l_fork;
-	bool		*r_fork;
-	int			time_to_die;
-	int			time_to_eat;
-	int			time_to_sleep;
+	int				id;
+	pthread_t		thread;
+	pthread_mutex_t	fork;
+	pthread_mutex_t	*l_fork;
+	pthread_mutex_t	*r_fork;
+	pthread_mutex_t	*write_lock;
+	int				*time_to_die;
+	int				*time_to_eat;
+	int				*time_to_sleep;
 }		t_philosopher;
 
 typedef struct s_data
@@ -35,9 +36,10 @@ typedef struct s_data
 	int				number_of_times_each_philosopher_must_eat;
 	int				time_to_die;
 	int				time_to_eat;
-	int				time_to_sleep;		
+	int				time_to_sleep;
+	pthread_mutex_t	write_lock;
 	t_philosopher	**philosophers;
-}		t_data;
+}						t_data;
 
 //	FROM FILE utils/app_init.c
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   app_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 03:53:52 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/23 05:29:09 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/01/29 18:28:21 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 static void	init_forks(t_data *data, t_philosopher *philosopher, int id)
 {
-	philosopher->fork = true;
+	pthread_mutex_init(&philosopher->fork, 0);
+	philosopher->write_lock = &data->write_lock;
 	if (id - 1 > 0)
 	{
 		philosopher->l_fork = &data->philosophers[id - 2]->fork;
@@ -41,9 +42,9 @@ static t_philosopher	*new_philosopher(t_data *data)
 		return (0);
 	philosopher->id = ++id;
 	init_forks(data, philosopher, id);
-	philosopher->time_to_die = data->time_to_die;
-	philosopher->time_to_eat = data->time_to_eat;
-	philosopher->time_to_sleep = data->time_to_sleep;
+	philosopher->time_to_die = &data->time_to_die;
+	philosopher->time_to_eat = &data->time_to_eat;
+	philosopher->time_to_sleep = &data->time_to_sleep;
 	return (philosopher);
 }
 
@@ -92,6 +93,7 @@ t_data	*app_init(int argc, char **argv)
 	data = galloc(sizeof(t_data));
 	if (!data)
 		return (0);
+	pthread_mutex_init(&data->write_lock, 0);
 	data->philosophers = 0;
 	data->number_of_philosophers = parse_pint(argv[1]);
 	if (data->number_of_philosophers < 0)
