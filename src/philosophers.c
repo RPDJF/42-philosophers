@@ -3,25 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 02:25:08 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/23 06:25:48 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/01/29 18:28:30 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-pthread_mutex_t	mutex;
+static int	display(t_philosopher *philosopher, char *s)
+{
+	char	*tmp;
+
+	pthread_mutex_lock(philosopher->write_lock);
+	tmp = ft_itoa(philosopher->id);
+	if (!tmp)
+		return (-1);
+	tmp = ft_strreplace(s, "{id}", tmp);
+	if (!tmp)
+		return (-1);
+	ft_putendl_fd(tmp, STDOUT_FILENO);
+	gfree(tmp);
+	pthread_mutex_unlock(philosopher->write_lock);
+	return (0);
+}
 
 static void	*start_routine(void *param)
 {
 	t_philosopher	*philosopher;
 
-	pthread_mutex_lock(&mutex);
 	philosopher = (t_philosopher *)param;
-	ft_printf("Je suis le %dième philosopher !\n", philosopher->id);
-	pthread_mutex_unlock(&mutex);
+	pthread_mutex_lock(&philosopher->fork);
+	pthread_mutex_lock(philosopher->r_fork);
+	display(philosopher, "Philosopher {id} is eating.");
+	usleep(1000000 * *philosopher->time_to_eat);
+	display(philosopher, "Philosopher {id} finished eating.");
+	pthread_mutex_unlock(philosopher->r_fork);
+	pthread_mutex_unlock(&philosopher->fork);
 	return (0);
 }
 
@@ -40,13 +59,11 @@ static int	start_philo(t_data *data)
 {
 	t_philosopher	**philosophers;
 
-	pthread_mutex_init(&mutex, 0);
 	if (start_threads(data->philosophers) < 0)
 		return (-1);
 	philosophers = data->philosophers;
 	while (*philosophers)
 		pthread_join((*(philosophers++))->thread, 0);
-	pthread_mutex_destroy(&mutex);
 	return (0);
 }
 
