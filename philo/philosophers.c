@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 02:25:08 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/30 00:31:47 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/01/30 00:46:08 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,13 @@ static void	*start_routine(void *param)
 	t_philosopher	*philosopher;
 
 	philosopher = (t_philosopher *)param;
-	if (!philosopher->has_eaten)
-		philo_eat(philosopher);
-	if (philosopher->has_eaten)
-		philo_sleep(philosopher);
+	while (!check_death(philosopher))
+	{
+		if (!philosopher->has_eaten)
+			philo_eat(philosopher);
+		if (philosopher->has_eaten)
+			philo_sleep(philosopher);
+	}
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 03:53:52 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/30 00:43:39 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/01/30 00:45:43 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static int	init_simulation_limit(t_data *data, int argc, char **argv)
 	return (0);
 }
 
-static int	destroy_data(t_data *data)
+static t_data	*destroy_data(t_data *data)
 {
 	t_philosopher	**head;
 
