@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:22:51 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/30 00:16:54 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/01/30 00:30:26 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ bool	check_death(t_philosopher *philosopher);
 //	FROM FILE utils/exit_handler.c
 
 //		secure_exit: clear garbage collector and returns 0
-int		secure_exit(void);
+int		secure_exit(t_data *data);
 //		error_exit: clear garbage collector and returns 1
 int		error_exit(void);
 //		crash_exit: clear garbage collector, prints error and returns 0
