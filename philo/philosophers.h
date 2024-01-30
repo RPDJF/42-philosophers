@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:22:51 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/30 14:23:23 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/01/30 22:27:21 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int		secure_exit(t_data *data);
 //		error_exit: clear garbage collector and returns 1
 int		error_exit(void);
 //		crash_exit: clear garbage collector, prints error and returns 0
-int		crash_exit(void);
+int		crash_exit(t_data *data);
 
 //	FROM FILE utils/ft_utils_atoitoa.c
 
