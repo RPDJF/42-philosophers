@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 03:53:52 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/30 12:44:18 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/01/30 18:19:16 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static void	init_forks(t_data *data, t_philosopher *philosopher, int id)
 {
 	pthread_mutex_init(&philosopher->fork, 0);
+	pthread_mutex_init(&philosopher->eat_lock, 0);
 	philosopher->write_lock = &data->write_lock;
 	if (id - 1 > 0)
 	{
@@ -41,7 +42,8 @@ static t_philosopher	*new_philosopher(t_data *data)
 	if (!philosopher)
 		return (0);
 	philosopher->id = ++id;
-	philosopher->program_start_timeval = &data->start_timeval;
+	gettimeofday(&philosopher->last_time_eating, NULL);
+	philosopher->start_timeval = &data->start_timeval;
 	init_forks(data, philosopher, id);
 	philosopher->is_someone_dead = &data->is_dead;
 	philosopher->dead_lock = &data->dead_lock;

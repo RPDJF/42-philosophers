@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 02:25:08 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/30 12:57:50 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/01/30 19:30:21 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,30 +21,60 @@ static long	get_timestamp(struct timeval time)
 		+ (end.tv_usec - time.tv_usec) / 1000L);
 }
 
+static int	check_starving(t_philosopher *philosopher)
+{
+	long	timestamp;
+
+	timestamp = get_timestamp(philosopher->last_time_eating);
+	if (timestamp >= *philosopher->time_to_die)
+	{
+		pthread_mutex_lock(&philosopher->eat_lock);
+		pthread_mutex_lock(philosopher->write_lock);
+		printf("%ld %d died\n",
+			get_timestamp(*philosopher->start_timeval), philosopher->id);
+		pthread_mutex_unlock(philosopher->write_lock);
+		pthread_mutex_unlock(&philosopher->eat_lock);
+		return (1);
+	}
+	return (0);
+}
+
 static void	philo_sleep(t_philosopher *philosopher)
 {
 	pthread_mutex_lock(philosopher->write_lock);
-	printf("%ld %d is sleeping\n",
-		get_timestamp(*philosopher->program_start_timeval), philosopher->id);
+	if (!check_death(philosopher))
+		printf("%ld %d is sleeping\n",
+			get_timestamp(*philosopher->start_timeval), philosopher->id);
 	pthread_mutex_unlock(philosopher->write_lock);
-	usleep(1000 * *philosopher->time_to_sleep);
+	if (!check_death(philosopher))
+		usleep(1000 * *philosopher->time_to_sleep);
 	philosopher->has_eaten = 0;
 }
 
 static void	philo_eat(t_philosopher *philosopher)
 {
 	pthread_mutex_lock(philosopher->write_lock);
-	printf("%ld %d is thinking\n",
-		get_timestamp(*philosopher->program_start_timeval), philosopher->id);
+	if (!check_death(philosopher))
+		printf("%ld %d is thinking\n",
+			get_timestamp(*philosopher->start_timeval), philosopher->id);
 	pthread_mutex_unlock(philosopher->write_lock);
 	pthread_mutex_lock(&philosopher->fork);
 	pthread_mutex_lock(philosopher->r_fork);
-	pthread_mutex_lock(philosopher->write_lock);
-	printf("%ld %d has taken a fork\n",
-		get_timestamp(*philosopher->program_start_timeval), philosopher->id);
-	pthread_mutex_unlock(philosopher->write_lock);
-	usleep(1000 * *philosopher->time_to_eat);
-	philosopher->has_eaten = true;
+	pthread_mutex_lock(&philosopher->eat_lock);
+	if (!check_death(philosopher))
+	{
+		pthread_mutex_lock(philosopher->write_lock);
+		printf("%ld %d has taken a fork\n",
+			get_timestamp(*philosopher->start_timeval), philosopher->id);
+		pthread_mutex_unlock(philosopher->write_lock);
+	}
+	if (!check_death(philosopher))
+	{
+		usleep(1000 * *philosopher->time_to_eat);
+		philosopher->has_eaten = true;
+		gettimeofday(&philosopher->last_time_eating, NULL);
+	}
+	pthread_mutex_unlock(&philosopher->eat_lock);
 	pthread_mutex_unlock(philosopher->r_fork);
 	pthread_mutex_unlock(&philosopher->fork);
 }
@@ -54,28 +84,57 @@ static void	*start_routine(void *param)
 	t_philosopher	*philosopher;
 
 	philosopher = (t_philosopher *)param;
-	int	i;
 
-	i = 0;
-	while (!check_death(philosopher) && i < 2)
+	while (true)
 	{
-		if (!philosopher->has_eaten)
-			philo_eat(philosopher);
-		if (philosopher->has_eaten)
-			philo_sleep(philosopher);
-		i++;
+		if (check_death(philosopher))
+			break ;
+		philo_eat(philosopher);
+		if (check_death(philosopher))
+			break ;
+		philo_sleep(philosopher);
 	}
 	return (0);
 }
 
-static int	start_threads(t_philosopher **philosophers)
+static void	*check_routine(void *param)
 {
+	t_data	*data;
+	int		i;
+
+	data = (t_data *)param;
+	while (true)
+	{
+		i = -1;
+		while (i++, data->philosophers[i])
+		{
+			if (check_death(data->philosophers[i]))
+				return (0);	// derniere modif
+			if (check_starving(data->philosophers[i]))
+			{
+				pthread_mutex_lock(&data->dead_lock);
+				data->is_dead = true;
+				pthread_mutex_unlock(&data->dead_lock);
+			}
+		}
+	}
+	return (0);
+}
+
+static int	start_threads(t_data *data)
+{
+	pthread_t		thread_checker;
+	t_philosopher	**philosophers;
+
+	philosophers = data->philosophers;
 	while (*philosophers)
 	{
 		if (pthread_create(&(*philosophers)->thread, NULL, start_routine, *philosophers))
 			return (-1);
 		philosophers++;
 	}
+	pthread_create(&thread_checker, NULL, check_routine, data);
+	pthread_join(thread_checker, 0);
 	return (0);
 }
 
@@ -83,7 +142,7 @@ static int	start_philo(t_data *data)
 {
 	t_philosopher	**philosophers;
 
-	if (start_threads(data->philosophers) < 0)
+	if (start_threads(data) < 0)
 		return (-1);
 	philosophers = data->philosophers;
 	while (*philosophers)

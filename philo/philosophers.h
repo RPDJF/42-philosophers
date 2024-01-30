@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:22:51 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/30 12:54:21 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/01/30 19:15:11 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,25 +32,27 @@ typedef struct s_philosopher
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*write_lock;
 	pthread_mutex_t	*dead_lock;
-	int				*time_to_die;
-	int				*time_to_eat;
-	int				*time_to_sleep;
-	struct timeval	*program_start_timeval;
-}		t_philosopher;
+	pthread_mutex_t	eat_lock;
+	long			*time_to_die;
+	long			*time_to_eat;
+	long			*time_to_sleep;
+	struct timeval	last_time_eating;
+	struct timeval	*start_timeval;
+}					t_philosopher;
 
 typedef struct s_data
 {
 	int				number_of_philosophers;
 	int				number_of_times_each_philosopher_must_eat;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
+	long			time_to_die;
+	long			time_to_eat;
+	long			time_to_sleep;
 	struct timeval	start_timeval;
 	pthread_mutex_t	write_lock;
 	pthread_mutex_t	dead_lock;
 	bool			is_dead;
 	t_philosopher	**philosophers;
-}						t_data;
+}					t_data;
 
 //	FROM FILE utils/app_init.c
 
@@ -61,8 +63,6 @@ t_data	*app_init(int argc, char **argv);
 
 //	FROM FILE utils/events_handler.c
 
-//		update_death: update philosopher death status using mutex lockers
-void	update_death(t_philosopher *philosopher, bool status);
 //		check_death: checks current philosopher death status using mutex lockers
 bool	check_death(t_philosopher *philosopher);
 
