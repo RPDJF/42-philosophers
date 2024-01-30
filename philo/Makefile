@@ -80,6 +80,7 @@ SRC = 	philosophers \
 		utils/ft_utils_mem \
 		utils/ft_utils_str \
 		utils/parser \
+		utils/time_utils \
 
 
 CFILES = $(SRC:%=./%.c)

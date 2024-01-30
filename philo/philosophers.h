@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:22:51 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/30 19:15:11 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/01/30 14:23:23 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_philosopher
 	int				id;
 	bool			*is_someone_dead;
 	bool			has_eaten;
+	bool			is_eating;
 	pthread_t		thread;
 	pthread_mutex_t	fork;
 	pthread_mutex_t	*l_fork;
@@ -65,6 +66,8 @@ t_data	*app_init(int argc, char **argv);
 
 //		check_death: checks current philosopher death status using mutex lockers
 bool	check_death(t_philosopher *philosopher);
+//		send_status: writes status message in console
+void	send_status(t_philosopher *philosopher, char *status);
 
 //	FROM FILE utils/exit_handler.c
 
@@ -105,5 +108,14 @@ int		ft_strcmp(char *s1, char *s2);
 //		returns positive int value
 //		returns -1 in error
 int		parse_pint(char *input);
+
+//	FROM FILE utils/time_utils.c
+
+//		actual_time: returns current time in MS
+long	actual_time(void);
+//		get_timestamp: returns the difference between now and param
+long	get_timestamp(struct timeval time);
+//		mssleep: sleep in ms
+void	mssleep(long time_in_ms);
 
 #endif
