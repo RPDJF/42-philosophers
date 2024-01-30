@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:22:51 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/30 00:30:26 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/01/30 12:54:21 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include <sys/time.h>
 
 typedef struct s_philosopher
 {
@@ -34,6 +35,7 @@ typedef struct s_philosopher
 	int				*time_to_die;
 	int				*time_to_eat;
 	int				*time_to_sleep;
+	struct timeval	*program_start_timeval;
 }		t_philosopher;
 
 typedef struct s_data
@@ -43,6 +45,7 @@ typedef struct s_data
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
+	struct timeval	start_timeval;
 	pthread_mutex_t	write_lock;
 	pthread_mutex_t	dead_lock;
 	bool			is_dead;
@@ -74,10 +77,10 @@ int		crash_exit(void);
 
 //	FROM FILE utils/ft_utils_atoitoa.c
 
-//		ft_itoa: converts int into allocated string equivalent
-char	*ft_itoa(int n);
-//		ft_atoi: converts str into an int equivalent
-int		ft_atoi(const char *str);
+//		ft_itoa: converts long into an allocated string equivalent
+char	*ft_itoa(long n);
+//		ft_atoi: converts str into a long equivalent
+long	ft_atoi(const char *str);
 
 //	FROM FILE utils/ft_utils_mem.c
 void	*ft_reallocf(void *ptr, size_t size, size_t newsize);

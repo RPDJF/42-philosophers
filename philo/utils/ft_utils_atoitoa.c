@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_utils.c                                         :+:      :+:    :+:   */
+/*   ft_utils_atoitoa.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:55:42 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/30 00:04:11 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/01/30 12:38:40 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philosophers.h"
 
-static unsigned int	inputparser(int n)
+static unsigned long	inputparser(long n)
 {
-	unsigned int	output;
+	unsigned long	output;
 
 	if (n < 0)
 		output = -n;
@@ -23,10 +23,10 @@ static unsigned int	inputparser(int n)
 	return (output);
 }
 
-char	*ft_itoa(int n)
+char	*ft_itoa(long n)
 {
 	char			*p;
-	unsigned int	temp;
+	unsigned long	temp;
 	int				isneg;
 	int				len;
 
@@ -67,10 +67,10 @@ static int	ft_isdigit(int c)
 	return (1);
 }
 
-int	ft_atoi(const char *str)
+long	ft_atoi(const char *str)
 {
-	int	output;
-	int	sign;
+	long	output;
+	int		sign;
 
 	output = 0;
 	sign = 1;
