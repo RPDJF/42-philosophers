@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 04:26:57 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/31 00:01:45 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/01/31 02:32:39 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ static void	destroy_philosophers(t_philosopher **philosophers)
 {
 	while (*philosophers)
 	{
+		pthread_mutex_unlock(&((*philosophers)->fork));
 		pthread_mutex_destroy(&((*philosophers)->fork));
+		pthread_mutex_unlock(&((*philosophers)->eat_lock));
 		pthread_mutex_destroy(&((*philosophers)->eat_lock));
 		free(*philosophers);
 		philosophers++;
