@@ -79,7 +79,9 @@ SRC = 	philosophers \
 		utils/ft_utils_atoitoa \
 		utils/ft_utils_mem \
 		utils/ft_utils_str \
+		utils/hypervisor \
 		utils/parser \
+		utils/simulation \
 		utils/time_utils \
 
 

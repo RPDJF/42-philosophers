@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:22:51 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/31 01:30:40 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/01/31 03:57:05 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,12 +102,22 @@ char	*ft_strtrim(char const *s1, char const *set);
 //		ft_strcmp: returns difference between s1 and s2
 int		ft_strcmp(char *s1, char *s2);
 
+// FROM FILE utils/hypervisor.c
+
+//		hypervisor_routine: hypervisor thread routine
+void	*hypervisor_routine(void *param);
+
 //	FROM FILE utils/parser.c
 
 //		parse_pint: parse char *input into a int
 //		returns positive int value
 //		returns -1 in error
 int		parse_pint(char *input);
+
+//	FROM FILE utils/simulation.c
+
+//		philsopher_routine: simulation routine to attach to a thread
+void	*philosopher_routine(void *param);
 
 //	FROM FILE utils/time_utils.c
 
