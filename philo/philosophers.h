@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:22:51 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/30 22:27:21 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/01/31 01:30:40 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,5 @@ int		parse_pint(char *input);
 long	actual_time(void);
 //		get_timestamp: returns the difference between now and param
 long	get_timestamp(struct timeval time);
-//		mssleep: sleep in ms
-void	mssleep(long time_in_ms);
 
 #endif

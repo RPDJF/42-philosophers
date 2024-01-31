@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 02:25:08 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/31 00:06:47 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/01/31 01:30:19 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,15 @@ static int	check_starving(t_philosopher *philosopher)
 {
 	long	timestamp;
 
+	pthread_mutex_lock(&philosopher->eat_lock);
 	timestamp = get_timestamp(philosopher->last_time_eating);
-	if (timestamp >= *philosopher->time_to_die)
+	if (timestamp > *philosopher->time_to_die)
 	{
-		pthread_mutex_lock(&philosopher->eat_lock);
 		send_status(philosopher, "died");
 		pthread_mutex_unlock(&philosopher->eat_lock);
 		return (1);
 	}
+	pthread_mutex_unlock(&philosopher->eat_lock);
 	return (0);
 }
 
@@ -31,7 +32,7 @@ static void	philo_sleep(t_philosopher *philosopher)
 {
 	send_status(philosopher, "is sleeping");
 	if (!check_death(philosopher))
-		mssleep(*philosopher->time_to_sleep);
+		usleep(1000 * *philosopher->time_to_sleep);
 	philosopher->has_eaten = 0;
 }
 
@@ -46,7 +47,7 @@ static void	philo_eat(t_philosopher *philosopher)
 	send_status(philosopher, "is eating");
 	if (!check_death(philosopher))
 	{
-		mssleep(*philosopher->time_to_eat);
+		usleep(1000 * *philosopher->time_to_eat);
 		philosopher->has_eaten = true;
 		gettimeofday(&philosopher->last_time_eating, 0);
 	}
@@ -86,15 +87,15 @@ static void	*hypervisor_routine(void *param)
 		{
 			if (check_death(data->philosophers[i]))
 				return (0);
+			pthread_mutex_lock(&data->dead_lock);
 			if (check_starving(data->philosophers[i]))
 			{
-				pthread_mutex_lock(&data->dead_lock);
 				data->is_dead = true;
 				j = -1;
 				while (data->philosophers[++j])
 					pthread_mutex_unlock(&data->philosophers[j]->fork);
-				pthread_mutex_unlock(&data->dead_lock);
 			}
+			pthread_mutex_unlock(&data->dead_lock);
 		}
 		usleep(5000);
 	}
