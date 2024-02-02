@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 03:48:46 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/02 17:44:15 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/02 18:33:48 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static void	philo_eat(t_philosopher *philosopher)
 	send_status(philosopher, "has taken a fork");
 	pthread_mutex_lock(&philosopher->fork);
 	send_status(philosopher, "has taken a fork");
-	set_is_eating(philosopher, true);
 	send_status(philosopher, "is eating");
 	if (!check_death(philosopher))
 	{
@@ -41,7 +40,7 @@ static void	philo_eat(t_philosopher *philosopher)
 		philosopher->has_eaten = true;
 		gettimeofday(&philosopher->last_time_eating, 0);
 	}
-	set_is_eating(philosopher, false);
+	philosopher->eat_counter++;
 	pthread_mutex_unlock(&philosopher->fork);
 	pthread_mutex_unlock(philosopher->r_fork);
 }
@@ -53,6 +52,9 @@ void	*philosopher_routine(void *param)
 	philosopher = (t_philosopher *)param;
 	while (true)
 	{
+		if (*philosopher->max_eat_counter
+			&& philosopher->eat_counter >= *philosopher->max_eat_counter)
+			break ;
 		if (philosopher->wait)
 		{
 			mssleep(5);
@@ -67,5 +69,6 @@ void	*philosopher_routine(void *param)
 		else
 			philo_sleep(philosopher);
 	}
+	printf("CIAO!!!!\n");
 	return (0);
 }

@@ -6,16 +6,29 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 03:54:58 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/02 17:45:20 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/02 18:31:09 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philosophers.h"
 
+static int	check_finish(t_philosopher **philosophers)
+{
+	while (*philosophers)
+	{
+		if ((*philosophers)->eat_counter >= *(*philosophers)->max_eat_counter)
+			return (0);
+		philosophers++;
+	}
+	return (1);
+}
+
 static int	check_starving(t_philosopher *philosopher)
 {
 	long	timestamp;
 
+	if (philosopher->eat_counter >= *philosopher->max_eat_counter)
+		return (0);
 	timestamp = get_difftimestamp(philosopher->last_time_eating);
 	if (timestamp >= *philosopher->time_to_die)
 		return (1);
@@ -43,6 +56,8 @@ void	*hypervisor_routine(void *param)
 	data = (t_data *)param;
 	while (true)
 	{
+		if (check_finish(data->philosophers))
+			break ;
 		i = -1;
 		while (i++, data->philosophers[i])
 		{

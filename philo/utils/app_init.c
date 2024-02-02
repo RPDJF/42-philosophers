@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 03:53:52 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/02 17:43:21 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/02 18:33:26 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,11 @@ t_philosopher	*new_philosopher(t_data *data)
 		philosopher->wait = true;
 	else
 		philosopher->wait = false;
+	philosopher->eat_counter = 0;
+	philosopher->max_eat_counter
+		= &data->number_of_times_each_philosopher_must_eat;
 	philosopher->write_lock = &data->write_lock;
 	philosopher->has_think = false;
-	philosopher->is_eating = false;
 	gettimeofday(&philosopher->last_time_eating, NULL);
 	philosopher->start_timeval = &data->start_timeval;
 	init_forks(data, philosopher, id);

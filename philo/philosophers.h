@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:22:51 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/02 17:11:54 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/02 18:33:20 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ typedef struct s_philosopher
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*write_lock;
 	pthread_mutex_t	*dead_lock;
-	pthread_mutex_t	eat_lock;
-	bool			is_eating;
+	int				*max_eat_counter;
+	int				eat_counter;
 	long			*time_to_die;
 	long			*time_to_eat;
 	long			*time_to_sleep;
@@ -70,10 +70,6 @@ t_data			*app_init(int argc, char **argv);
 
 //		check_death: checks philosopher death status using mutex lockers
 bool			check_death(t_philosopher *philosopher);
-//		check_is_eating: checks philosopher eating status using mutex lockers
-bool			check_is_eating(t_philosopher *philosopher);
-//		set_is_eating: defines philosopher eating status using mutex lockers
-bool			set_is_eating(t_philosopher *philosopher, bool status);
 //		send_status: writes status message in console
 void			send_status(t_philosopher *philosopher, char *status);
 

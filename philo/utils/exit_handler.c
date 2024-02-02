@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 04:26:57 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/02 12:04:22 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/02 18:36:42 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,19 @@
 
 t_data	*destroy_data(t_data *data)
 {
-	t_philosopher	**head;
+	t_philosopher	**philosopher;
 
-	head = data->philosophers;
-	if (head)
+	philosopher = data->philosophers;
+	if (philosopher)
 	{
-		while (*head)
+		while (*philosopher)
 		{
-			free(*head);
-			head++;
+			pthread_mutex_unlock(&((*philosophers)->fork));
+			pthread_mutex_destroy(&((*philosophers)->fork));
+			pthread_mutex_unlock(&((*philosophers)->eat_lock));
+			pthread_mutex_destroy(&((*philosophers)->eat_lock));
+			free(*philosopher);
+			philosopher++;
 		}
 	}
 	free(data->philosophers);

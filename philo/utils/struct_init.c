@@ -6,16 +6,15 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:09:35 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/02 17:44:01 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/02 18:35:03 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philosophers.h"
 
-void	 init_forks(t_data *data, t_philosopher *philosopher, int id)
+void	init_forks(t_data *data, t_philosopher *philosopher, int id)
 {
 	pthread_mutex_init(&philosopher->fork, 0);
-	pthread_mutex_init(&philosopher->eat_lock, 0);
 	if (id - 1 > 0)
 	{
 		philosopher->l_fork = &data->philosophers[id - 2]->fork;
