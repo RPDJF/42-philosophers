@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:22:51 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/02 09:38:12 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/02 09:57:15 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_philosopher
 	int				id;
 	bool			*is_someone_dead;
 	bool			has_eaten;
+	bool			has_think;
 	bool			is_eating;
 	pthread_t		thread;
 	pthread_mutex_t	fork;
@@ -123,8 +124,10 @@ void	*philosopher_routine(void *param);
 
 //		actual_time: returns current time in MS
 long	actual_time(void);
-//		get_timestamp: returns the difference between now and param
-long	get_timestamp(struct timeval time);
+//		get_difftimestamp: returns the difference between now and param
+long	get_difftimestamp(struct timeval time);
+//		get_timestamp: returns current timestamp in ms
+long	get_timestamp(void);
 //		mssleep: home made usleep function that waits the inteded time
 void	mssleep(long time_in_ms);
 

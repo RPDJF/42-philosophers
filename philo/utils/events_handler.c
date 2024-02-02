@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   events_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 21:39:58 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/31 03:18:36 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/02 09:54:52 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	send_status(t_philosopher *philosopher, char *status)
 		return ;
 	}
 	printf("%ld %d %s\n",
-		get_timestamp(*philosopher->start_timeval),
+		get_difftimestamp(*philosopher->start_timeval),
 		philosopher->id,
 		status);
 	pthread_mutex_unlock(philosopher->write_lock);

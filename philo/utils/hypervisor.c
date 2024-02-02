@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hypervisor.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 03:54:58 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/31 03:57:32 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/02 10:03:45 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	check_starving(t_philosopher *philosopher)
 	long	timestamp;
 
 	pthread_mutex_lock(&philosopher->eat_lock);
-	timestamp = get_timestamp(philosopher->last_time_eating);
+	timestamp = get_difftimestamp(philosopher->last_time_eating);
 	if (timestamp > *philosopher->time_to_die)
 	{
 		pthread_mutex_unlock(&philosopher->eat_lock);
@@ -33,7 +33,7 @@ static void	kill_philosopher(t_data *data, t_philosopher *philosopher)
 	data->is_dead = true;
 	pthread_mutex_lock(&data->write_lock);
 	printf("%ld %d died\n",
-		get_timestamp(data->start_timeval),
+		get_difftimestamp(data->start_timeval),
 		philosopher->id);
 	pthread_mutex_unlock(&data->write_lock);
 	pthread_mutex_unlock(&data->dead_lock);
@@ -61,7 +61,7 @@ void	*hypervisor_routine(void *param)
 					pthread_mutex_unlock(&data->philosophers[j]->fork);
 			}
 		}
-		usleep(5000);
+		mssleep(5);
 	}
 	return (0);
 }

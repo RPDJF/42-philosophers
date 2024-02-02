@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 03:53:52 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/30 13:41:26 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/02 09:50:34 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static t_philosopher	*new_philosopher(t_data *data)
 	if (!philosopher)
 		return (0);
 	philosopher->id = ++id;
+	philosopher->has_think = false;
 	philosopher->is_eating = false;
 	gettimeofday(&philosopher->last_time_eating, NULL);
 	philosopher->start_timeval = &data->start_timeval;
