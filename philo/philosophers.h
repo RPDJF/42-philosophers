@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:22:51 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/31 03:57:05 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/02 09:38:12 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,5 +125,7 @@ void	*philosopher_routine(void *param);
 long	actual_time(void);
 //		get_timestamp: returns the difference between now and param
 long	get_timestamp(struct timeval time);
+//		mssleep: home made usleep function that waits the inteded time
+void	mssleep(long time_in_ms);
 
 #endif

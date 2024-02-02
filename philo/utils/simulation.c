@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simulation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 03:48:46 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/31 03:49:00 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/02 09:45:25 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	philo_sleep(t_philosopher *philosopher)
 {
 	send_status(philosopher, "is sleeping");
 	if (!check_death(philosopher))
-		usleep(1000 * *philosopher->time_to_sleep);
+		mssleep( *philosopher->time_to_sleep);
 	philosopher->has_eaten = 0;
 }
 
@@ -31,7 +31,7 @@ static void	philo_eat(t_philosopher *philosopher)
 	send_status(philosopher, "is eating");
 	if (!check_death(philosopher))
 	{
-		usleep(1000 * *philosopher->time_to_eat);
+		mssleep( *philosopher->time_to_eat);
 		philosopher->has_eaten = true;
 		gettimeofday(&philosopher->last_time_eating, 0);
 	}
@@ -49,10 +49,10 @@ void	*philosopher_routine(void *param)
 	{
 		if (check_death(philosopher))
 			break ;
-		philo_eat(philosopher);
-		if (check_death(philosopher))
-			break ;
-		philo_sleep(philosopher);
+		if (!philosopher->has_eaten)
+			philo_eat(philosopher);
+		else
+			philo_sleep(philosopher);
 	}
 	return (0);
 }
