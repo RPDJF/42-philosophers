@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 03:54:58 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/02 18:31:09 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/02 20:49:34 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ static int	check_starving(t_philosopher *philosopher)
 {
 	long	timestamp;
 
-	if (philosopher->eat_counter >= *philosopher->max_eat_counter)
+	if (*philosopher->max_eat_counter
+		&& philosopher->eat_counter >= *philosopher->max_eat_counter)
 		return (0);
 	timestamp = get_difftimestamp(philosopher->last_time_eating);
 	if (timestamp >= *philosopher->time_to_die)

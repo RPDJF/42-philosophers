@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 02:25:08 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/02 16:32:16 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/02 20:55:37 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ int	main(int argc, char **argv)
 		return (error_exit());
 	data = app_init(argc, argv);
 	if (!data)
-		return (crash_exit(0));
+		return (crash_exit());
 	gettimeofday(&data->start_timeval, 0);
 	pthread_mutex_init(&data->write_lock, 0);
 	pthread_mutex_init(&data->dead_lock, 0);
 	if (start_philo(data) < 0)
-		return (crash_exit(data));
-	return (secure_exit(data));
+		return (crash_exit());
+	return (secure_exit());
 }

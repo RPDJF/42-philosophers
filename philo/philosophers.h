@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:22:51 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/02 18:33:20 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/02 20:47:56 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,13 @@ void			send_status(t_philosopher *philosopher, char *status);
 //	FROM FILE utils/exit_handler.c
 
 //		destroy_data: destroy data structure
-t_data			*destroy_data(t_data *data);
+t_data			*destroy_data(void);
 //		secure_exit: clear garbage collector and returns 0
-int				secure_exit(t_data *data);
+int				secure_exit(void);
 //		error_exit: clear garbage collector and returns 1
 int				error_exit(void);
 //		crash_exit: clear garbage collector, prints error and returns 0
-int				crash_exit(t_data *data);
+int				crash_exit(void);
 
 //	FROM FILE utils/ft_utils_atoitoa.c
 

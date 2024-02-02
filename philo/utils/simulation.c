@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 03:48:46 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/02 18:33:48 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/02 20:54:50 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,5 @@ void	*philosopher_routine(void *param)
 		else
 			philo_sleep(philosopher);
 	}
-	printf("CIAO!!!!\n");
 	return (0);
 }
