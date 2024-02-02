@@ -82,6 +82,7 @@ SRC = 	philosophers \
 		utils/hypervisor \
 		utils/parser \
 		utils/simulation \
+		utils/struct_init \
 		utils/time_utils \
 
 

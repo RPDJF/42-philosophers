@@ -3,14 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   exit_handler.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 04:26:57 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/31 02:32:39 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/02 12:04:22 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philosophers.h"
+
+t_data	*destroy_data(t_data *data)
+{
+	t_philosopher	**head;
+
+	head = data->philosophers;
+	if (head)
+	{
+		while (*head)
+		{
+			free(*head);
+			head++;
+		}
+	}
+	free(data->philosophers);
+	free(data);
+	return (0);
+}
 
 static void	destroy_philosophers(t_philosopher **philosophers)
 {

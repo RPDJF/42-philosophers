@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 03:54:58 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/02 10:03:45 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:45:20 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,9 @@ static int	check_starving(t_philosopher *philosopher)
 {
 	long	timestamp;
 
-	pthread_mutex_lock(&philosopher->eat_lock);
 	timestamp = get_difftimestamp(philosopher->last_time_eating);
-	if (timestamp > *philosopher->time_to_die)
-	{
-		pthread_mutex_unlock(&philosopher->eat_lock);
+	if (timestamp >= *philosopher->time_to_die)
 		return (1);
-	}
-	pthread_mutex_unlock(&philosopher->eat_lock);
 	return (0);
 }
 
@@ -61,7 +56,7 @@ void	*hypervisor_routine(void *param)
 					pthread_mutex_unlock(&data->philosophers[j]->fork);
 			}
 		}
-		mssleep(5);
+		mssleep(1);
 	}
 	return (0);
 }
