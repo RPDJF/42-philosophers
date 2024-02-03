@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 00:07:17 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/03 01:50:29 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/03 01:48:49 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	*ft_reallocf(void *ptr, size_t size, size_t newsize)
 	new_alloc = (unsigned char *)galloc(newsize);
 	if (new_alloc == 0)
 	{
-		gfree(ptr);
+		ggfree(ptr);
 		return (0);
 	}
 	while (i < size && i < newsize)
@@ -33,7 +33,7 @@ void	*ft_reallocf(void *ptr, size_t size, size_t newsize)
 		new_alloc[i] = old_alloc[i];
 		i++;
 	}
-	gfree(ptr);
+	ggfree(ptr);
 	return (new_alloc);
 }
 

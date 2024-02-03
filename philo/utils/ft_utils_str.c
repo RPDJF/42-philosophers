@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 23:45:31 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/30 00:16:36 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/03 01:39:10 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*ft_strdup(const char *s)
 	size_t	i;
 
 	size = ft_strlen(s);
-	dup = malloc((size + 1) * sizeof(char));
+	dup = galloc((size + 1) * sizeof(char));
 	if (!dup)
 		return (0);
 	i = -1;

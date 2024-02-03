@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 03:54:46 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/02 12:05:19 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/03 01:50:01 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ int	parse_pint(char *input)
 		return (-1);
 	tmp = ft_itoa(output);
 	if (!tmp)
-		free(input);
+		gfree(input);
 	if (!tmp)
 		return (-1);
 	if (ft_strcmp(input, tmp))
 		output = -1;
-	free(input);
-	free(tmp);
+	gfree(input);
+	gfree(tmp);
 	return (output);
 }
 

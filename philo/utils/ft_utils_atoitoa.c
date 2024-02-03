@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils_atoitoa.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 22:55:42 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/01/30 12:38:40 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/03 01:39:10 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*ft_itoa(long n)
 	len = 0;
 	while (++len, temp >= 10)
 		temp /= 10;
-	p = (char *)malloc((len + 1 + isneg) * sizeof(char));
+	p = (char *)galloc((len + 1 + isneg) * sizeof(char));
 	if (!p)
 		return (0);
 	p[(len + isneg) * sizeof(char)] = 0;

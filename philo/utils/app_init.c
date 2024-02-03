@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   app_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 03:53:52 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/02 20:56:23 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/03 01:39:10 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_philosopher	*new_philosopher(t_data *data)
 	t_philosopher	*philosopher;
 	static int		id;
 
-	philosopher = malloc(sizeof(t_philosopher));
+	philosopher = galloc(sizeof(t_philosopher));
 	if (!philosopher)
 		return (0);
 	philosopher->id = ++id;
@@ -47,7 +47,7 @@ t_data	*app_init(int argc, char **argv)
 {
 	t_data	*data;
 
-	data = malloc(sizeof(t_data));
+	data = galloc(sizeof(t_data));
 	if (!data)
 		return (0);
 	data->is_dead = false;
