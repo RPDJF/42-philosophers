@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:22:51 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/03 01:55:51 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/05 19:49:41 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,8 @@ void			send_status(t_philosopher *philosopher, char *status);
 
 //	FROM FILE utils/exit_handler.c
 
-//		destroy_data: destroy data structure
-t_data			*destroy_data(void);
 //		secure_exit: clear garbage collector and returns 0
-int				secure_exit(void);
+int				secure_exit(t_data *data);
 //		error_exit: clear garbage collector and returns 1
 int				error_exit(char *error);
 //		crash_exit: clear garbage collector, prints error and returns 0

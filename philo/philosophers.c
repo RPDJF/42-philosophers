@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rude-jes <rude-jes@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 02:25:08 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/03 01:54:53 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/05 19:49:10 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,5 @@ int	main(int argc, char **argv)
 	pthread_mutex_init(&data->dead_lock, 0);
 	if (start_philo(data) < 0)
 		return (crash_exit());
-	return (secure_exit());
+	return (secure_exit(data));
 }
