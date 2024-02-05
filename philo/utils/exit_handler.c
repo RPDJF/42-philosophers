@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 04:26:57 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/05 19:48:47 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/05 19:50:40 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	destroy_mutex(t_data *data)
 
 int	secure_exit(t_data *data)
 {
-	destroy_data(data);
+	destroy_mutex(data);
 	cleargarbage();
 	return (0);
 }
