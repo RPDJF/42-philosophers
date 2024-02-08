@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 03:48:46 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/02 20:54:50 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/08 15:08:36 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,24 @@ static void	philo_eat(t_philosopher *philosopher)
 		philosopher->has_eaten = true;
 		gettimeofday(&philosopher->last_time_eating, 0);
 	}
+	pthread_mutex_lock(&philosopher->eat_lock);
 	philosopher->eat_counter++;
+	pthread_mutex_unlock(&philosopher->eat_lock);
 	pthread_mutex_unlock(&philosopher->fork);
 	pthread_mutex_unlock(philosopher->r_fork);
+}
+
+static int	check_hungry(t_philosopher *philosopher)
+{
+	pthread_mutex_lock(&philosopher->eat_lock);
+	if (*philosopher->max_eat_counter
+		&& philosopher->eat_counter >= *philosopher->max_eat_counter)
+	{
+		pthread_mutex_unlock(&philosopher->eat_lock);
+		return (0);
+	}
+	pthread_mutex_unlock(&philosopher->eat_lock);
+	return (1);
 }
 
 void	*philosopher_routine(void *param)
@@ -52,8 +67,7 @@ void	*philosopher_routine(void *param)
 	philosopher = (t_philosopher *)param;
 	while (true)
 	{
-		if (*philosopher->max_eat_counter
-			&& philosopher->eat_counter >= *philosopher->max_eat_counter)
+		if (!check_hungry(philosopher))
 			break ;
 		if (philosopher->wait)
 		{

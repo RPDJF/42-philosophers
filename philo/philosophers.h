@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:22:51 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/05 19:49:41 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/08 13:01:35 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_philosopher
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*write_lock;
 	pthread_mutex_t	*dead_lock;
+	pthread_mutex_t	eat_lock;
 	int				*max_eat_counter;
 	int				eat_counter;
 	long			*time_to_die;

@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:09:35 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/02 18:35:03 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/08 13:01:59 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	init_philosophers(t_data *data)
 		if (!data->philosophers)
 			return (-1);
 		data->philosophers[idx] = new_philosopher(data);
+		pthread_mutex_init(&data->philosophers[idx]->eat_lock, 0);
 		if (!data->philosophers[idx])
 			return (-1);
 	}

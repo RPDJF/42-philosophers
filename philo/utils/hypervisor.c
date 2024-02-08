@@ -6,20 +6,33 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 03:54:58 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/08 10:57:22 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/08 14:05:10 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philosophers.h"
 
+static int	check_philosopher_done(t_philosopher *philosopher)
+{
+	if (!*philosopher->max_eat_counter)
+		return (0);
+	pthread_mutex_lock(&philosopher->eat_lock);
+	if (philosopher->eat_counter < *philosopher->max_eat_counter)
+	{
+		pthread_mutex_unlock(&philosopher->eat_lock);
+		return (0);
+	}
+	pthread_mutex_unlock(&philosopher->eat_lock);
+	return (1);
+}
+
 static int	check_finish(t_philosopher **philosophers)
 {
+	if (!*(*philosophers)->max_eat_counter)
+		return (0);
 	while (*philosophers)
-	{
-		if ((*philosophers)->eat_counter < *(*philosophers)->max_eat_counter)
+		if (!check_philosopher_done(*(philosophers++)))
 			return (0);
-		philosophers++;
-	}
 	return (1);
 }
 
@@ -27,9 +40,14 @@ static int	check_starving(t_philosopher *philosopher)
 {
 	long	timestamp;
 
+	pthread_mutex_lock(&philosopher->eat_lock);
 	if (*philosopher->max_eat_counter
 		&& philosopher->eat_counter >= *philosopher->max_eat_counter)
+	{
+		pthread_mutex_unlock(&philosopher->eat_lock);
 		return (0);
+	}
+	pthread_mutex_unlock(&philosopher->eat_lock);
 	timestamp = get_difftimestamp(philosopher->last_time_eating);
 	if (timestamp >= *philosopher->time_to_die)
 		return (1);
@@ -64,9 +82,10 @@ void	*hypervisor_routine(void *param)
 		{
 			if (check_death(data->philosophers[i]))
 				return (0);
-			if (check_starving(data->philosophers[i]))
+			if (!check_philosopher_done(data->philosophers[i])
+				&& check_starving(data->philosophers[i]))
 			{
-				kill_philosopher(data, data->philosophers[i]);
+				kill_philosopher(data, data->philosophers [i]);
 				j = -1;
 				while (j++, data->philosophers[j])
 					pthread_mutex_unlock(&data->philosophers[j]->fork);
