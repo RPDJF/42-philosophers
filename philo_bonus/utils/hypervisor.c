@@ -6,22 +6,33 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 03:54:58 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/05 19:07:40 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/08 11:17:44 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philosophers.h"
 
-/*static int	check_finish(t_philosopher **philosophers)
+int	check_finish(t_philosopher *philosopher)
 {
-	while (*philosophers)
-	{
-		if ((*philosophers)->eat_counter >= *(*philosophers)->max_eat_counter)
-			return (0);
-		philosophers++;
-	}
-	return (1);
-}*/
+	if (!*philosopher->max_eat_counter)
+		return (0);
+	if (philosopher->eat_counter >= *philosopher->max_eat_counter)
+		return (1);
+	return (0);
+}
+
+int	check_starving(t_philosopher *philosopher)
+{
+	long	timestamp;
+
+	if (*philosopher->max_eat_counter
+		&& philosopher->eat_counter >= *philosopher->max_eat_counter)
+		return (0);
+	timestamp = get_difftimestamp(philosopher->last_time_eating);
+	if (timestamp >= *philosopher->time_to_die)
+		return (1);
+	return (0);
+}
 
 static void	kill_philosophers(t_data *data)
 {
@@ -35,9 +46,13 @@ static void	kill_philosophers(t_data *data)
 	sem_post(data->dead_lock);
 }
 
-void	hypervisor(t_data *data)
+void	*hypervisor(void *param)
 {
+	t_data	*data;
+
+	data = param;
 	sem_wait(data->living_philos);
 	kill_philosophers(data);
 	sem_post(data->living_philos);
+	return (0);
 }

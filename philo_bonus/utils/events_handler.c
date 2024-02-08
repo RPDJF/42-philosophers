@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 21:39:58 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/05 17:22:33 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/08 15:14:04 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,11 @@ bool	check_death(t_philosopher *philosopher)
 void	send_status(t_philosopher *philosopher, char *status)
 {
 	sem_wait(*philosopher->write_lock);
-	if (*philosopher->is_someone_dead)
-	{
-		sem_post(*philosopher->write_lock);
-		return ;
-	}
 	printf("%ld %d %s\n",
 		get_difftimestamp(*philosopher->start_timeval),
 		philosopher->id,
 		status);
+	if (!strcmp(status, "is dead"))
+		return ;
 	sem_post(*philosopher->write_lock);
 }

@@ -6,11 +6,20 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 02:25:08 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/05 19:40:25 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/08 16:17:04 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+
+static void	wait_childs(t_philosopher **philosophers)
+{
+	while (*philosophers)
+	{
+		waitpid((*philosophers)->pid, 0, 0);
+		philosophers++;
+	}
+}
 
 static int	start_processes(t_data *data)
 {
@@ -19,7 +28,7 @@ static int	start_processes(t_data *data)
 	philosophers = data->philosophers;
 	while (*philosophers)
 	{
-		printf("%d\n", sem_wait(data->living_philos));
+		sem_wait(data->living_philos);
 		(*philosophers)->pid = fork();
 		if ((*philosophers)->pid < 0)
 			return (-1);
@@ -28,9 +37,13 @@ static int	start_processes(t_data *data)
 			philosopher_routine(*philosophers);
 			exit(0);
 		}
-		philosophers++;
+		else
+			philosophers++;
 	}
-	hypervisor(data);
+	pthread_create(&data->hypervisor, 0, hypervisor, data);
+	wait_childs(data->philosophers);
+	sem_post(data->living_philos);
+	pthread_join(data->hypervisor, 0);
 	return (0);
 }
 
@@ -50,10 +63,7 @@ int	main(int argc, char **argv)
 {
 	t_data	*data;
 
-	sem_unlink("WRITE_LOCK");
-	sem_unlink("DEAD_LOCK");
-	sem_unlink("FORKS_LOCKER");
-	sem_unlink("LIVING_LOCKER");
+	unlink_sems();
 	if (argc < 5 || argc > 6)
 		return (error_exit("Wrong usage."));
 	data = app_init(argc, argv);
@@ -66,9 +76,5 @@ int	main(int argc, char **argv)
 			data->number_of_philosophers);
 	if (start_philo(data) < 0)
 		return (crash_exit());
-	sem_unlink("WRITE_LOCK");
-	sem_unlink("DEAD_LOCK");
-	sem_unlink("FORKS_LOCKER");
-	sem_unlink("LIVING_LOCKER");
 	return (secure_exit());
 }

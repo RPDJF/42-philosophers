@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 03:54:58 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/08 14:05:10 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/08 16:23:29 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ static int	check_starving(t_philosopher *philosopher)
 
 static void	kill_philosopher(t_data *data, t_philosopher *philosopher)
 {
+	int		j;
+
 	pthread_mutex_lock(&data->dead_lock);
 	data->is_dead = true;
 	pthread_mutex_lock(&data->write_lock);
@@ -64,13 +66,15 @@ static void	kill_philosopher(t_data *data, t_philosopher *philosopher)
 		philosopher->id);
 	pthread_mutex_unlock(&data->write_lock);
 	pthread_mutex_unlock(&data->dead_lock);
+	j = -1;
+	while (j++, data->philosophers[j])
+		pthread_mutex_unlock(&data->philosophers[j]->fork);
 }
 
 void	*hypervisor_routine(void *param)
 {
 	t_data	*data;
 	int		i;
-	int		j;
 
 	data = (t_data *)param;
 	while (true)
@@ -84,12 +88,7 @@ void	*hypervisor_routine(void *param)
 				return (0);
 			if (!check_philosopher_done(data->philosophers[i])
 				&& check_starving(data->philosophers[i]))
-			{
 				kill_philosopher(data, data->philosophers [i]);
-				j = -1;
-				while (j++, data->philosophers[j])
-					pthread_mutex_unlock(&data->philosophers[j]->fork);
-			}
 		}
 		mssleep(1);
 	}

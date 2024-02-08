@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 03:48:46 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/05 18:24:57 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/08 11:05:16 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,38 @@ static void	philo_eat(t_philosopher *philosopher)
 	sem_post(philosopher->forks);
 }
 
+void	*philosopher_reaper(void *param)
+{
+	t_philosopher	*philosopher;
+
+	philosopher = param;
+	while (true)
+	{
+		sem_wait(*philosopher->dead_lock);
+		if (check_finish(philosopher))
+		{
+			sem_post(*philosopher->living_philos);
+			sem_post(*philosopher->dead_lock);
+			exit(0);
+		}
+		else if (check_starving(philosopher))
+		{
+			sem_post(*philosopher->living_philos);
+			sem_post(*philosopher->dead_lock);
+			send_status(philosopher, "is dead");
+			exit(0);
+		}
+		sem_post(*philosopher->dead_lock);
+		mssleep(2);
+	}
+}
+
 void	*philosopher_routine(void *param)
 {
 	t_philosopher	*philosopher;
 
 	philosopher = (t_philosopher *)param;
+	pthread_create(&philosopher->reaper_thread, 0, philosopher_reaper, param);
 	while (true)
 	{
 		if (*philosopher->max_eat_counter

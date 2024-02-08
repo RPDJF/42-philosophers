@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 02:22:51 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/05 18:58:38 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/08 16:20:13 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_philosopher
 	bool			has_eaten;
 	bool			has_think;
 	pid_t			pid;
+	pthread_t		reaper_thread;
 	sem_t			*forks;
 	sem_t			**write_lock;
 	sem_t			**dead_lock;
@@ -53,6 +54,7 @@ typedef struct s_philosopher
 
 typedef struct s_data
 {
+	pthread_t		hypervisor;
 	int				number_of_philosophers;
 	int				number_of_times_each_philosopher_must_eat;
 	long			time_to_die;
@@ -77,15 +79,15 @@ t_data			*app_init(int argc, char **argv);
 
 //	FROM FILE utils/events_handler.c
 
-//		check_death: checks philosopher death status using mutex lockers
+//		check_death: checks philosopher death status using semaphores lockers
 bool			check_death(t_philosopher *philosopher);
 //		send_status: writes status message in console
 void			send_status(t_philosopher *philosopher, char *status);
 
 //	FROM FILE utils/exit_handler.c
 
-//		destroy_data: destroy data structure
-t_data			*destroy_data(void);
+//		unlink_sems: unlink all semaphores
+void			unlink_sems(void);
 //		secure_exit: clear garbage collector and returns 0
 int				secure_exit(void);
 //		error_exit: clear garbage collector and returns 1
@@ -135,8 +137,12 @@ void			*galloc(size_t size);
 
 // FROM FILE utils/hypervisor.c
 
+//		check_finish: checks if philosophers have finished their meal
+int				check_finish(t_philosopher *philosophers);
+//		check_starving: checks if philosopher is starving
+int				check_starving(t_philosopher *philosopher);
 //		hypervisor: philosopher hypervisor
-void			hypervisor(t_data *data);
+void			*hypervisor(void *param);
 
 //	FROM FILE utils/parser.c
 

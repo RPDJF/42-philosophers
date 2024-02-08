@@ -6,11 +6,19 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 03:53:52 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/05 19:14:03 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/08 12:37:38 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philosophers.h"
+
+static void	init_void_satus(t_philosopher *philosopher)
+{
+	if (philosopher->id % 2)
+		philosopher->wait = false;
+	else
+		philosopher->wait = true;
+}
 
 t_philosopher	*new_philosopher(t_data *data)
 {
@@ -21,10 +29,7 @@ t_philosopher	*new_philosopher(t_data *data)
 	if (!philosopher)
 		return (0);
 	philosopher->id = ++id;
-	if (id % 2)
-		philosopher->wait = false;
-	else
-		philosopher->wait = true;
+	init_void_satus(philosopher);
 	philosopher->eat_counter = 0;
 	philosopher->max_eat_counter
 		= &data->number_of_times_each_philosopher_must_eat;
