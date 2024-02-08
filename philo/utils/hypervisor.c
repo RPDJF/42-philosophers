@@ -6,7 +6,7 @@
 /*   By: rude-jes <rude-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 03:54:58 by rude-jes          #+#    #+#             */
-/*   Updated: 2024/02/02 20:49:34 by rude-jes         ###   ########.fr       */
+/*   Updated: 2024/02/08 10:57:22 by rude-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	check_finish(t_philosopher **philosophers)
 {
 	while (*philosophers)
 	{
-		if ((*philosophers)->eat_counter >= *(*philosophers)->max_eat_counter)
+		if ((*philosophers)->eat_counter < *(*philosophers)->max_eat_counter)
 			return (0);
 		philosophers++;
 	}
