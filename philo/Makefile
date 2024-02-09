@@ -76,7 +76,7 @@ SRC = 	philosophers \
 
 CFILES = $(SRC:%=./%.c)
 
-NAME = philosophers
+NAME = philo
 
 all: $(NAME)
 
