@@ -13,6 +13,9 @@
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
+# include <fcntl.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include <stdbool.h>
 # include <pthread.h>
 # include <stdio.h>

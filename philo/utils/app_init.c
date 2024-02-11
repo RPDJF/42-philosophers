@@ -21,15 +21,15 @@ t_philosopher	*new_philosopher(t_data *data)
 	if (!philosopher)
 		return (0);
 	philosopher->id = ++id;
+	philosopher->wait = true;
 	if (id % 2)
 		philosopher->wait = false;
-	else
-		philosopher->wait = true;
 	philosopher->eat_counter = 0;
 	philosopher->max_eat_counter
 		= &data->number_of_times_each_philosopher_must_eat;
 	philosopher->write_lock = &data->write_lock;
 	philosopher->has_think = false;
+	philosopher->has_eaten = false;
 	gettimeofday(&philosopher->last_time_eating, NULL);
 	philosopher->start_timeval = &data->start_timeval;
 	init_forks(data, philosopher, id);

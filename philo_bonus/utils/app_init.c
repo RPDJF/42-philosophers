@@ -35,6 +35,7 @@ t_philosopher	*new_philosopher(t_data *data)
 		= &data->number_of_times_each_philosopher_must_eat;
 	philosopher->write_lock = &data->write_lock;
 	philosopher->has_think = false;
+	philosopher->has_eaten = false;
 	gettimeofday(&philosopher->last_time_eating, NULL);
 	philosopher->start_timeval = &data->start_timeval;
 	philosopher->forks = init_forks(data->number_of_philosophers);
